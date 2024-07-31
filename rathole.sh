@@ -288,7 +288,7 @@ fi
         *) echo -e "${RED}Invalid option!${NC}" && sleep 1 ;;
     esac
     echo
-    read -p "Press Enter to continue..."
+    read -p "Press Enter to continue."
 }
 
 
@@ -305,9 +305,10 @@ iran_server_configuration() {
     #Add IPv6 Support
 	local_ip='0.0.0.0'
 	
+
 	echo 
 	
-	
+	while true; do
 	    echo -ne "[*] Tunnel port: "
 	    read -r tunnel_port
 	
@@ -328,12 +329,15 @@ iran_server_configuration() {
 	local nodelay="true"
 	# Keep prompting the user until a valid input is provided
 	
+	done
     
     echo
     
     # Initialize HEARTBEAT variable
 	local HEARTBEAT="true"
+	# Keep prompting the user until a valid input is provided
 	
+	done
     
     if [[ "$HEARTBEAT" == "true" ]]; then
     	HEARTBEAT="30"
@@ -343,11 +347,17 @@ iran_server_configuration() {
     echo
     
     # Initialize transport variable
-	local transport=tcp"
-	token="arman"
+	local transport="tcp"
+	# Keep prompting the user until a valid input is provided
+	
 	done
+	
 	echo 
- 
+token="arman"
+	
+
+	echo 
+	
 	# Prompt for Ports
 	echo -ne "[*] Enter your ports separated by commas (e.g. 2070,2080): "
 	read -r input_ports
@@ -377,7 +387,7 @@ iran_server_configuration() {
 	fi
 	
 	
-    # Generate server configuration file
+ 
     cat << EOF > "${config_dir}/iran${tunnel_port}.toml"
 [server]
 bind_addr = "${local_ip}:${tunnel_port}"
@@ -471,27 +481,17 @@ kharej_server_configuration() {
     echo
     
 	# Initialize nodelay variable
-	local nodelay=""
+	local nodelay="true"
 	# Keep prompting the user until a valid input is provided
-	while [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; do
-	    echo -ne "[*] TCP_NODELAY (true/false): " 
-	    read -r nodelay
-	    if [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; then
-	        colorize red "Invalid nodelay input. Please enter 'true' or 'false'"
-	    fi
+	
 	done
 
 	echo
 	
 	# Initialize HEARTBEAT variable
-	local HEARTBEAT=""
+	local HEARTBEAT="true"
 	# Keep prompting the user until a valid input is provided
-	while [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; do
-	    echo -ne "[*] Enable HEARTBEAT (true/false): " 
-	    read -r HEARTBEAT
-	    if [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; then
-	        colorize red "Invalid HEARTBEAT value. Please enter 'true' or 'false'"
-	    fi
+	
 	done
     
     if [[ "$HEARTBEAT" == "true" ]]; then
@@ -503,18 +503,10 @@ kharej_server_configuration() {
     echo
 
     # Initialize transport variable
-    local transport=""
+    local transport="tcp"
 
 	# Keep prompting the user until a valid input is provided
-	while [[ "$transport" != "tcp" && "$transport" != "udp" ]]; do
-	    # Prompt the user to input transport type
-	    echo -ne "[*] Transport type (tcp/udp): " 
-	    read -r transport
 	
-	    # Check if the input is either tcp or udp
-	    if [[ "$transport" != "tcp" && "$transport" != "udp" ]]; then
-	        colorize red "Invalid transport type. Please enter 'tcp' or 'udp'"
-	    fi
 	done
 
 	echo
@@ -522,7 +514,7 @@ kharej_server_configuration() {
 	echo -ne "[-] Security Token (press enter to use default value): "
 	read -r token
 	if [[ -z "$token" ]]; then
-		token="musixal"
+		token="arman"
 	fi
 
 	echo
