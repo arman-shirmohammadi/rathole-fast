@@ -354,7 +354,11 @@ iran_server_configuration() {
 	
 	echo 
 token="arman"
-	
+	echo -ne "[-] Security Token (press enter to use default value): "
+	read -r token
+	if [[ -z "$token" ]]; then
+		token="arman"
+	fi
 
 	echo 
 	
@@ -387,7 +391,7 @@ token="arman"
 	fi
 	
 	
- 
+    # Generate server configuration file
     cat << EOF > "${config_dir}/iran${tunnel_port}.toml"
 [server]
 bind_addr = "${local_ip}:${tunnel_port}"
@@ -481,17 +485,27 @@ kharej_server_configuration() {
     echo
     
 	# Initialize nodelay variable
-	local nodelay="true"
+	local nodelay=""
 	# Keep prompting the user until a valid input is provided
-	
+	while [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; do
+	    echo -ne "[*] TCP_NODELAY (true/false): " 
+	    read -r nodelay
+	    if [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; then
+	        colorize red "Invalid nodelay input. Please enter 'true' or 'false'"
+	    fi
 	done
 
 	echo
 	
 	# Initialize HEARTBEAT variable
-	local HEARTBEAT="true"
+	local HEARTBEAT=""
 	# Keep prompting the user until a valid input is provided
-	
+	while [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; do
+	    echo -ne "[*] Enable HEARTBEAT (true/false): " 
+	    read -r HEARTBEAT
+	    if [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; then
+	        colorize red "Invalid HEARTBEAT value. Please enter 'true' or 'false'"
+	    fi
 	done
     
     if [[ "$HEARTBEAT" == "true" ]]; then
@@ -503,10 +517,18 @@ kharej_server_configuration() {
     echo
 
     # Initialize transport variable
-    local transport="tcp"
+    local transport=""
 
 	# Keep prompting the user until a valid input is provided
+	while [[ "$transport" != "tcp" && "$transport" != "udp" ]]; do
+	    # Prompt the user to input transport type
+	    echo -ne "[*] Transport type (tcp/udp): " 
+	    read -r transport
 	
+	    # Check if the input is either tcp or udp
+	    if [[ "$transport" != "tcp" && "$transport" != "udp" ]]; then
+	        colorize red "Invalid transport type. Please enter 'tcp' or 'udp'"
+	    fi
 	done
 
 	echo
@@ -514,7 +536,7 @@ kharej_server_configuration() {
 	echo -ne "[-] Security Token (press enter to use default value): "
 	read -r token
 	if [[ -z "$token" ]]; then
-		token="arman"
+		token="musixal"
 	fi
 
 	echo
