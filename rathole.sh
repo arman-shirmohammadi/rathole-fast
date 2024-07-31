@@ -471,14 +471,28 @@ kharej_server_configuration() {
     echo
     
 	# Initialize nodelay variable
-	local nodelay="true"
-	
+	local nodelay=""
+	# Keep prompting the user until a valid input is provided
+	while [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; do
+	    echo -ne "[*] TCP_NODELAY (true/false): " 
+	    read -r nodelay
+	    if [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; then
+	        colorize red "Invalid nodelay input. Please enter 'true' or 'false'"
+	    fi
+	done
 
 	echo
 	
 	# Initialize HEARTBEAT variable
-	local HEARTBEAT="true"
-	
+	local HEARTBEAT=""
+	# Keep prompting the user until a valid input is provided
+	while [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; do
+	    echo -ne "[*] Enable HEARTBEAT (true/false): " 
+	    read -r HEARTBEAT
+	    if [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; then
+	        colorize red "Invalid HEARTBEAT value. Please enter 'true' or 'false'"
+	    fi
+	done
     
     if [[ "$HEARTBEAT" == "true" ]]; then
     	HEARTBEAT="40"
@@ -489,13 +503,29 @@ kharej_server_configuration() {
     echo
 
     # Initialize transport variable
-    local transport="tcp"
+    local transport=""
 
-	token="arman"
+	# Keep prompting the user until a valid input is provided
+	while [[ "$transport" != "tcp" && "$transport" != "udp" ]]; do
+	    # Prompt the user to input transport type
+	    echo -ne "[*] Transport type (tcp/udp): " 
+	    read -r transport
+	
+	    # Check if the input is either tcp or udp
+	    if [[ "$transport" != "tcp" && "$transport" != "udp" ]]; then
+	        colorize red "Invalid transport type. Please enter 'tcp' or 'udp'"
+	    fi
+	done
 
 	echo
 
-	
+	echo -ne "[-] Security Token (press enter to use default value): "
+	read -r token
+	if [[ -z "$token" ]]; then
+		token="musixal"
+	fi
+
+	echo
 	
 		
 	# Prompt for Ports
@@ -529,7 +559,12 @@ kharej_server_configuration() {
 	
 	#Add IPv6 Support
 	local_ip='0.0.0.0'
-	
+	if check_ipv6 "$SERVER_ADDR"; then
+	    local_ip='[::]'
+	    # Remove brackets if present
+	    SERVER_ADDR="${SERVER_ADDR#[}"
+	    SERVER_ADDR="${SERVER_ADDR%]}"
+	fi
 
     # Generate server configuration file
     cat << EOF > "${config_dir}/kharej${tunnel_port}.toml"
@@ -872,9 +907,19 @@ add_new_config(){
     
     local config_path="$1"
     
-   
+    #Add IPv6 Support
 	local_ip='0.0.0.0'
-	
+	read -p "[-] Listen for IPv6 address? (y/n): " answer
+	if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
+	    colorize yellow "IPv6 Enabled"
+	    local_ip='[::]'
+	elif [ "$answer" = "n" ]; then
+	    colorize yellow "IPv4 Enabled"
+	    local_ip='0.0.0.0'
+	else
+	    colorize yellow "Invalid choice. IPv4 enabled by default."
+	    local_ip='0.0.0.0'
+	fi
 	
 	echo 
 	
