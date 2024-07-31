@@ -345,7 +345,7 @@ iran_server_configuration() {
     # Initialize transport variable
 	local transport=tcp"
 	token="arman"
-	
+	done
 	echo 
  
 	# Prompt for Ports
