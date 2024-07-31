@@ -334,19 +334,16 @@ iran_server_configuration() {
     
     # Initialize transport variable
 	local transport="tcp"
+  token="arman"
 	# Keep prompting the user until a valid input is provided
 	
 	   
 	    read -r transport
 	
-	   
-	
+
 	
 	echo 
 
-    token="arman"
-done
-	echo 
 	
 	# Prompt for Ports
 	echo -ne "[*] Enter your ports separated by commas (e.g. 2070,2080): "
