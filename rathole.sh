@@ -304,21 +304,10 @@ iran_server_configuration() {
     
     #Add IPv6 Support
 	local_ip='0.0.0.0'
-	read -p "[-] Listen for IPv6 address? (y/n): " answer
-	if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
-	    colorize yellow "IPv6 Enabled"
-	    local_ip='[::]'
-	elif [ "$answer" = "n" ]; then
-	    colorize yellow "IPv4 Enabled"
-	    local_ip='0.0.0.0'
-	else
-	    colorize yellow "Invalid choice. IPv4 enabled by default."
-	    local_ip='0.0.0.0'
-	fi
-
+	
 	echo 
 	
-	while true; do
+	
 	    echo -ne "[*] Tunnel port: "
 	    read -r tunnel_port
 	
@@ -336,28 +325,15 @@ iran_server_configuration() {
 	echo
 	
 	# Initialize nodelay variable
-	local nodelay=""
+	local nodelay="true"
 	# Keep prompting the user until a valid input is provided
-	while [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; do
-	    echo -ne "[*] Enable TCP_NODELAY (true/false): " 
-	    read -r nodelay
-	    if [[ "$nodelay" != "true" && "$nodelay" != "false" ]]; then
-	        colorize red "Invalid TCP_NODELAY value. Please enter 'true' or 'false'"
-	    fi
-	done
+	
     
     echo
     
     # Initialize HEARTBEAT variable
-	local HEARTBEAT=""
-	# Keep prompting the user until a valid input is provided
-	while [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; do
-	    echo -ne "[*] Enable HEARTBEAT (true/false): " 
-	    read -r HEARTBEAT
-	    if [[ "$HEARTBEAT" != "true" && "$HEARTBEAT" != "false" ]]; then
-	        colorize red "Invalid HEARTBEAT value. Please enter 'true' or 'false'"
-	    fi
-	done
+	local HEARTBEAT="true"
+	
     
     if [[ "$HEARTBEAT" == "true" ]]; then
     	HEARTBEAT="30"
@@ -367,29 +343,11 @@ iran_server_configuration() {
     echo
     
     # Initialize transport variable
-	local transport=""
-	# Keep prompting the user until a valid input is provided
-	while [[ "$transport" != "tcp" && "$transport" != "udp" ]]; do
-	    # Prompt the user to input transport type
-	    echo -ne "[*] Transport type(tcp/udp): " 
-	    read -r transport
-	
-	    # Check if the input is either tcp or udp
-	    if [[ "$transport" != "tcp" && "$transport" != "udp" ]]; then
-	        colorize red "Invalid transport type. Please enter 'tcp' or 'udp'"
-	    fi
-	done
+	local transport=tcp"
+	token="arman"
 	
 	echo 
-
-	echo -ne "[-] Security Token (press enter to use default value): "
-	read -r token
-	if [[ -z "$token" ]]; then
-		token="musixal"
-	fi
-
-	echo 
-	
+ 
 	# Prompt for Ports
 	echo -ne "[*] Enter your ports separated by commas (e.g. 2070,2080): "
 	read -r input_ports
