@@ -345,7 +345,7 @@ iran_server_configuration() {
 	echo 
 
     token="arman"
-
+done
 	echo 
 	
 	# Prompt for Ports
