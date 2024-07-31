@@ -341,7 +341,7 @@ iran_server_configuration() {
 	    read -r transport
 	
 
-	
+	done
 	echo 
 
 	
@@ -490,7 +490,7 @@ kharej_server_configuration() {
 		token="arman"
 
 	
-		
+		done
 	# Prompt for Ports
 	echo -ne "[*] Enter your ports separated by commas (e.g. 2070,2080): "
 	read -r input_ports
