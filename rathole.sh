@@ -317,7 +317,7 @@ iran_server_configuration() {
 	    echo -ne "[*] Enable TCP_NODELAY (true/false): " 
 	    read -r nodelay
 	  
-	done
+
     
     echo
     
