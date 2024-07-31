@@ -323,9 +323,7 @@ iran_server_configuration() {
     
     # Initialize HEARTBEAT variable
 	local HEARTBEAT="true"
-	# Keep prompting the user until a valid input is provided
-
-	done
+	
     
     if [[ "$HEARTBEAT" == "true" ]]; then
     	HEARTBEAT="30"
@@ -342,7 +340,7 @@ iran_server_configuration() {
 	    read -r transport
 	
 	   
-	done
+	
 	
 	echo 
 
